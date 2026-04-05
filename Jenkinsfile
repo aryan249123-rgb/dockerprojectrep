@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "devopdemo/html-demo"
-    }
-
     stages {
 
         stage('Clone Code') {
@@ -13,27 +9,16 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Verify HTML File') {
             steps {
-                bat 'docker build -t %DOCKER_IMAGE% .'
+                bat 'dir'
+                bat 'type index.html'
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Success Message') {
             steps {
-                bat 'docker login -u devopdemo -p Concealed'
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                bat 'docker push %DOCKER_IMAGE%'
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                bat 'kubectl apply -f deployment.yaml'
+                echo 'HTML project successfully fetched and verified!'
             }
         }
     }
