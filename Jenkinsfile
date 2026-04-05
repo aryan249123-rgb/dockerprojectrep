@@ -19,12 +19,15 @@ pipeline {
             }
         }
 
+        stage('Login to Docker Hub') {
+            steps {
+                bat 'docker login -u devopdemo -p Concealed'
+            }
+        }
+
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([string(credentialsId: 'docker-pass', variable: 'PASS')]) {
-                    bat 'docker login -u devopdemo -p %PASS%'
-                    bat 'docker push %DOCKER_IMAGE%'
-                }
+                bat 'docker push %DOCKER_IMAGE%'
             }
         }
 
